@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Toggle</title>
+    <style>
+        :root {
+            --background-color: #f4f4f4;
+            --text-color: #333;
+            --button-background: #007bff;
+            --button-text: white;
+            --link-color: #007bff;
+            --border-color: #ddd;
+        }
+
+        body.dark {
+            --background-color: #282c34;
+            --text-color: #e0e0e0;
+            --button-background: #61afef;
+            --button-text: #282c34;
+            --link-color: #98c379;
+            --border-color: #444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 700px;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: var(--background-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark .container {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        #dark-mode-toggle {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--button-background);
+            color: var(--button-text);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            outline: none;
+        }
+
+        #dark-mode-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #dark-mode-toggle:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to My Static Page</h1>
+        <p>
+            This is a minimal web application demonstrating a simple dark mode toggle.
+            Click the button below to switch between light and dark themes.
+            Your theme preference will be saved locally in your browser.
+        </p>
+        <button id="dark-mode-toggle">Toggle Dark Mode</button>
+        <p style="margin-top: 30px; font-size: 0.9em;">
+            Learn more about web development <a href="https://developer.mozilla.org/en-US/docs/Web" target="_blank">here</a>.
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.querySelector("#dark-mode-toggle");
+            const body = document.body;
+
+            // Function to apply the theme based on a boolean
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    body.classList.add("dark");
+                } else {
+                    body.classList.remove("dark");
+                }
+            };
+
+            // On page load, check for a saved theme preference
+            const savedTheme = localStorage.getItem("darkMode");
+            if (savedTheme === "true") {
+                applyTheme(true);
+            } else {
+                // Default to light mode if no preference or preference is "false"
+                applyTheme(false);
+            }
+
+            // Add event listener to the toggle button
+            if (toggleButton) {
+                toggleButton.addEventListener("click", () => {
+                    const isCurrentlyDark = body.classList.contains("dark");
+                    const newThemeState = !isCurrentlyDark; // Invert the current state
+                    applyTheme(newThemeState); // Apply the new theme
+                    localStorage.setItem("darkMode", newThemeState); // Save the new preference
+                });
+            } else {
+                console.error("Error: Dark mode toggle button not found.");
+                // Optionally provide user feedback for critical errors
+                const errorDiv = document.createElement('div');
+                errorDiv.style.color = 'red';
+                errorDiv.textContent = 'A critical component is missing. Please contact support.';
+                document.body.prepend(errorDiv);
+            }
+        });
+    </script>
+</body>
+</html>
